@@ -77,10 +77,14 @@ public:
         } else {    // 如果有左子树，就取左子树中最大的节点替代被删除的节点
             BSTree* leftMax=node->left->findMax();
             node->value=leftMax->value; // 替换value值
-            if (leftMax->isLeft()){   // 删掉leftMax
-                leftMax->parent->left=0;
+            // 删掉leftMax
+            if (leftMax->isLeft()) {    // 父节点改指向leftMax的左子树（leftMax没有右子树）
+                leftMax->parent->left=leftMax->left;
             } else {
-                leftMax->parent->right=0;
+                leftMax->parent->right=leftMax->left;
+            }
+            if (leftMax->left!=0) { // 左子树的父节点指向leftMax的父节点
+                leftMax->left->parent=leftMax->parent;
             }
         }
     }
